@@ -7,6 +7,9 @@
 //
 //  Playing card image reference
 //  http://acbl.mybigcommerce.com/52-playing-cards/
+//
+//  App icon reference
+// https://www.flaticon.com/free-icon/symbol-of-spades_1438?term=spade%20card&page=1&position=2
 
 import SwiftUI
 
