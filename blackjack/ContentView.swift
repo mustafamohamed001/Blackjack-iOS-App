@@ -23,6 +23,14 @@ struct ContentView: View {
     @State var gameWin = 0
     @State var gameTie = 0
     @State var gameState = -1
+    @State var cardRow = 0
+    
+    //Game States
+    // -1 - Default
+    // 0 - Win
+    // 1 - Dealer Win (Lost)
+    // 2 - Tie
+    // 3 - Bust (Lost)
 
     //Functions
     //Generate Card
@@ -52,16 +60,16 @@ struct ContentView: View {
                 num += 1
             }
             else if (temp == "J"){
-                num += 11
+                num += 10
             }
             else if (temp == "Q"){
-                num += 12
+                num += 10
             }
             else if (temp == "K"){
-                num += 13
+                num += 10
             }
             else {
-                num += Int(temp)!
+                num += Int(temp) ?? 0
             }
         }
         self.hand = num
@@ -73,16 +81,16 @@ struct ContentView: View {
                 num += 1
             }
             else if (temp == "J"){
-                num += 11
+                num += 10
             }
             else if (temp == "Q"){
-                num += 12
+                num += 10
             }
             else if (temp == "K"){
-                num += 13
+                num += 10
             }
             else {
-                num += Int(temp)!
+                num += Int(temp) ?? 0
             }
         }
         self.dealerHand = num
@@ -93,7 +101,7 @@ struct ContentView: View {
             let msg = "Player wins: \(gameWin)\nDealer wins: \(gameLost)\nTied games: \(gameTie)\nTotal games played: \(gamesPlayed)\nWin Percentage: \(((gameWin)/(1) * 100))"
             return msg
         }
-        let msg = "Player wins: \(gameWin)\nDealer wins: \(gameLost)\nTied games: \(gameTie)\nTotal games played: \(gamesPlayed-1)\nWin Percentage: \(((gameWin)/(gamesPlayed) * 100))"
+        let msg = "Player wins: \(gameWin)\nDealer wins: \(gameLost)\nTied games: \(gameTie)\nTotal games played: \(gamesPlayed)\nWin Percentage: \(((gameWin)/(gamesPlayed) * 100))"
         return msg
     }
     //Player Hold/Dealer
@@ -117,7 +125,7 @@ struct ContentView: View {
             self.gameState = 2
         }
     }
-    
+
     //App View
     var body: some View {
 
@@ -126,7 +134,7 @@ struct ContentView: View {
                 Image("purple_back")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 200)
+                .frame(width: 175)
             }
             else{
                 Image("purple_back")
@@ -148,6 +156,7 @@ struct ContentView: View {
                     self.cards = [self.getCard(), self.getCard()]
                     self.dealerCards = [""]
                     self.gamesPlayed += 1
+                    self.gameState = -1
                   }) {
                     Text("New Game")
                         .font(.callout)
@@ -156,9 +165,14 @@ struct ContentView: View {
                     .border(/*@START_MENU_TOKEN@*/Color.white/*@END_MENU_TOKEN@*/, width: /*@START_MENU_TOKEN@*/3/*@END_MENU_TOKEN@*/)
                 
                 //Hit Me Button
-                if(self.cards != [""]){
+                if(self.cards != [""] && self.gameState == -1){
                     Button(action: {
-                          self.cards.append(self.getCard())
+                        self.cards.append(self.getCard())
+                        self.getCardNum()
+                        if(self.hand > 21){
+                            self.gameState = 3
+                            self.gameLost += 1
+                        }
                       }) {
                         Text("Hit Me!")
                             .font(.callout)
@@ -168,7 +182,7 @@ struct ContentView: View {
                 }
                 
                 //Hold Button
-                if(self.cards != [""]){
+                if(self.cards != [""] && self.gameState == -1){
                     Button(action: {
                         self.playerHold()
                       }) {
@@ -192,14 +206,82 @@ struct ContentView: View {
                         Alert(title: Text("Statistics"), message: Text("\(showStats())"))
                 }
             }
-            if(self.cards != [""]){
-                HStack{
-                        ForEach(cards, id:\.self){ card in
+            
+            // ======================= Cards/Content ============================
+            HStack{
+                //Divider()
+                //Display Cards
+                if(self.cards != [""]){
+                    HStack{
+                        ForEach(self.cards, id:\.self){ card in
                             Image("\(card)")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 100)
+                            .frame(width: 90)
                         }
+    //                    for card in self.cards{
+    //                        var cardRow = self.cards.count / 3
+    //                        Image(card)
+    //                    }
+                    }.padding(.all)
+                }
+            }
+            HStack{
+                //Shows player status message at buttom
+                HStack{
+                    if(self.gameState == 3){
+                        Text("Bust!!!")
+                            .font(.title)
+                            .fontWeight(.heavy)
+                            .foregroundColor(Color.white)
+                    }
+                    else if(self.gameState == 0){
+                        VStack{
+                            HStack{
+                                ForEach(self.dealerCards, id:\.self){ card in
+                                    Image("\(card)")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 90)
+                                }
+                            }
+                            HStack{
+                                Text("You Win!!!")
+                                .font(.title)
+                                .fontWeight(.heavy)
+                                .foregroundColor(Color.white)
+                            }
+                        }
+                        
+                    }
+                    else if(self.gameState == 1){
+                        VStack{
+                            HStack{
+                                ForEach(self.dealerCards, id:\.self){ card in
+                                    Image("\(card)")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 90)
+                                }
+                            }
+                            HStack{
+                                Text("You Lost :(")
+                                .font(.title)
+                                .fontWeight(.heavy)
+                                .foregroundColor(Color.white)
+                            }
+                        }
+                    }
+                    else if(self.gameState == 2){
+                        VStack{
+                            HStack{
+                                Text("Tied Game!!")
+                                .font(.title)
+                                .fontWeight(.heavy)
+                                .foregroundColor(Color.white)
+                            }
+                        }
+                    }
                 }
             }
         }.background(Image("green_felt"))

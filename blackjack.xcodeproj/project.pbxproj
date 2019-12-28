@@ -91,6 +91,8 @@
 			dependencies = (
 			);
 			name = blackjack;
+			packageProductDependencies = (
+			);
 			productName = blackjack;
 			productReference = 8B378E8223AF24960064E3CF /* blackjack.app */;
 			productType = "com.apple.product-type.application";
@@ -119,6 +121,8 @@
 				Base,
 			);
 			mainGroup = 8B378E7923AF24960064E3CF;
+			packageReferences = (
+			);
 			productRefGroup = 8B378E8323AF24960064E3CF /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
