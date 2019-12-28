@@ -39,28 +39,48 @@ struct ContentView: View {
     //Generate Card
     func getCard() -> String {
         let card = Int.random(in: 1..<14)
+        let suit = Int.random(in: 0..<4)
+        //Suits
+        // 0 - Spades
+        // 1 - Clubs
+        // 2 - Diamonds
+        // 3 - Hearts
+        var suitLetter = ""
+        if(suit == 0){
+            suitLetter = "S"
+        }
+        else if(suit == 1){
+            suitLetter = "C"
+        }
+        else if(suit == 2){
+            suitLetter = "D"
+        }
+        else if(suit == 3){
+            suitLetter = "H"
+        }
         if(card == 11){
-            return "JS"
+            return "J" + suitLetter
         }
         else if(card == 12){
-            return "QS"
+            return "Q" + suitLetter
         }
         else if(card == 13){
-            return "KS"
+            return "K" + suitLetter
         }
         else if(card == 1){
-            return "AS"
+            return "A" + suitLetter
         }
-        return String(card) + "S"
+        return String(card) + suitLetter
     }
     //Determines card number equivalence of cards
     func getCardNum() -> Void {
+        //Player hand count
         var num = 0
         var temp = ""
         for card in cards {
             temp = String(card.dropLast())
             if(temp == "A"){
-                num += 1
+                num += 0
             }
             else if (temp == "J"){
                 num += 10
@@ -75,13 +95,26 @@ struct ContentView: View {
                 num += Int(temp) ?? 0
             }
         }
+        //Automatically makes Ace 1 or 11 in players benefit
+        for card in cards {
+            temp = String(card.dropLast())
+            if(temp == "A"){
+                if((num+11) > 21){
+                    num += 1
+                }
+                else{
+                    num += 11
+                }
+            }
+        }
         self.hand = num
+        //Dealer hand count
         num = 0
         temp = ""
         for card in dealerCards {
             temp = String(card.dropLast())
             if(temp == "A"){
-                num += 1
+                num += 0
             }
             else if (temp == "J"){
                 num += 10
@@ -94,18 +127,33 @@ struct ContentView: View {
             }
             else {
                 num += Int(temp) ?? 0
+            }
+        }
+        //Automatically makes Ace 1 or 11 in dealers benefit
+        for card in dealerCards {
+            temp = String(card.dropLast())
+            if(temp == "A"){
+                if((num+11) > 21){
+                    num += 1
+                }
+                else{
+                    num += 11
+                }
             }
         }
         self.dealerHand = num
     }
     //Show Statistics msg
     func showStats() -> String {
+        //If else statement because div by zero error
         if(gamesPlayed == 0){
             let msg = "Player wins: \(gameWin)\nDealer wins: \(gameLost)\nTied games: \(gameTie)\nTotal games played: \(gamesPlayed)\nWin Percentage: \(((gameWin)/(1) * 100))"
             return msg
         }
-        let msg = "Player wins: \(gameWin)\nDealer wins: \(gameLost)\nTied games: \(gameTie)\nTotal games played: \(gamesPlayed)\nWin Percentage: \(((gameWin)/(gamesPlayed) * 100))"
-        return msg
+        else{
+            let msg = "Player wins: \(gameWin)\nDealer wins: \(gameLost)\nTied games: \(gameTie)\nTotal games played: \(gamesPlayed)\nWin Percentage: \(round(Double(gameWin)/Double(gamesPlayed) * 100))"
+            return msg
+        }
     }
     //Player Hold/Dealer
     func playerHold() -> Void {
@@ -134,13 +182,13 @@ struct ContentView: View {
 
         VStack {
             if(self.cards == [""]){
-                Image("purple_back")
+                Image("blue_back")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 175)
             }
             else{
-                Image("purple_back")
+                Image("blue_back")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 125)
@@ -151,7 +199,6 @@ struct ContentView: View {
                     .fontWeight(.bold)
                     .foregroundColor(Color.white)
                     .padding(.all)
-                    //.position(x: 210, y: 30)
             }
             HStack{
                 //New Game Button
@@ -160,6 +207,7 @@ struct ContentView: View {
                     self.dealerCards = [""]
                     self.gamesPlayed += 1
                     self.gameState = -1
+                    self.getCardNum()
                   }) {
                     Text("New Game")
                         .font(.callout)
@@ -175,6 +223,9 @@ struct ContentView: View {
                         if(self.hand > 21){
                             self.gameState = 3
                             self.gameLost += 1
+                        }
+                        else if(self.hand == 21){
+                            self.playerHold()
                         }
                       }) {
                         Text("Hit Me!")
@@ -208,81 +259,101 @@ struct ContentView: View {
                     .alert(isPresented: $showAlert) {
                         Alert(title: Text("Statistics"), message: Text("\(showStats())"))
                 }
+                
+                //Shows card count
+                if(self.gameState == -1 && self.cards != [""]){
+                    
+                }
+                
             }
             
             // ======================= Cards/Content ============================
             HStack{
-                //Divider()
                 //Display Cards
                 if(self.cards != [""]){
-                    HStack{
-                        ForEach(self.cards, id:\.self){ card in
-                            Image("\(card)")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 90)
+                    VStack{
+                        HStack{
+                            Divider()
+                            ForEach(self.cards, id:\.self){ card in
+                                Image("\(card)")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(maxWidth: 100)
+                            }
+                            Divider()
+                        }.padding(.vertical)
+                        HStack{
+                            if(self.cards != [""] && self.gameState == -1){
+                                Text("Card Count: \(self.hand)")
+                                    .font(.headline)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(Color.white)
+                                    .padding(.all)
+                            }
                         }
-    //                    for card in self.cards{
-    //                        var cardRow = self.cards.count / 3
-    //                        Image(card)
-    //                    }
-                    }.padding(.all)
+                    }
                 }
             }
             HStack{
                 //Shows player status message at buttom
-                HStack{
-                    if(self.gameState == 3){
-                        Text("Bust!!!")
+                //Bust
+                if(self.gameState == 3){
+                    Text("Bust!!!")
+                        .font(.title)
+                        .fontWeight(.heavy)
+                        .foregroundColor(Color.white)
+                }
+                //Player Won
+                else if(self.gameState == 0){
+                    VStack{
+                        HStack{
+                            Divider()
+                            ForEach(self.dealerCards, id:\.self){ card in
+                                Image("\(card)")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(maxWidth: 100)
+                            }
+                            Divider()
+                        }
+                        HStack{
+                            Text("You Win!!!")
                             .font(.title)
                             .fontWeight(.heavy)
                             .foregroundColor(Color.white)
-                    }
-                    else if(self.gameState == 0){
-                        VStack{
-                            HStack{
-                                ForEach(self.dealerCards, id:\.self){ card in
-                                    Image("\(card)")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 90)
-                                }
-                            }
-                            HStack{
-                                Text("You Win!!!")
-                                .font(.title)
-                                .fontWeight(.heavy)
-                                .foregroundColor(Color.white)
-                            }
-                        }
-                        
-                    }
-                    else if(self.gameState == 1){
-                        VStack{
-                            HStack{
-                                ForEach(self.dealerCards, id:\.self){ card in
-                                    Image("\(card)")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 90)
-                                }
-                            }
-                            HStack{
-                                Text("You Lost :(")
-                                .font(.title)
-                                .fontWeight(.heavy)
-                                .foregroundColor(Color.white)
-                            }
                         }
                     }
-                    else if(self.gameState == 2){
-                        VStack{
-                            HStack{
-                                Text("Tied Game!!")
-                                .font(.title)
-                                .fontWeight(.heavy)
-                                .foregroundColor(Color.white)
+                }
+                //Dealer Won
+                else if(self.gameState == 1){
+                    VStack{
+                        HStack{
+                            Divider()
+                            ForEach(self.dealerCards, id:\.self){ card in
+                                Image("\(card)")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(maxWidth: 100)
                             }
+                            Divider()
+                        }
+                        HStack{
+                            Text("You Lost :(")
+                            .font(.title)
+                            .fontWeight(.heavy)
+                            .foregroundColor(Color.white)
+                        }
+                    }
+                }
+                //Game Tied
+                else if(self.gameState == 2){
+                    VStack{
+                        Divider()
+                        HStack{
+                            Text("Tied Game!!")
+                            .font(.title)
+                            .fontWeight(.heavy)
+                            .foregroundColor(Color.white)
                         }
                     }
                 }

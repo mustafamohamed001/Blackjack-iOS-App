@@ -16,7 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		8B378E8223AF24960064E3CF /* Blackjack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Blackjack.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B378E8223AF24960064E3CF /* blackjack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = blackjack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B378E8523AF24960064E3CF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8B378E8723AF24970064E3CF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		8B378E8923AF24970064E3CF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -48,7 +48,7 @@
 		8B378E8323AF24960064E3CF /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8B378E8223AF24960064E3CF /* Blackjack.app */,
+				8B378E8223AF24960064E3CF /* blackjack.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -94,7 +94,7 @@
 			packageProductDependencies = (
 			);
 			productName = blackjack;
-			productReference = 8B378E8223AF24960064E3CF /* Blackjack.app */;
+			productReference = 8B378E8223AF24960064E3CF /* blackjack.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -112,7 +112,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 8B378E7D23AF24960064E3CF /* Build configuration list for PBXProject "Blackjack" */;
+			buildConfigurationList = 8B378E7D23AF24960064E3CF /* Build configuration list for PBXProject "blackjack" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -298,7 +298,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.mustafamohamed.blackjack;
-				PRODUCT_NAME = Blackjack;
+				PRODUCT_NAME = blackjack;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -318,7 +318,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.mustafamohamed.blackjack;
-				PRODUCT_NAME = Blackjack;
+				PRODUCT_NAME = blackjack;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -327,7 +327,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		8B378E7D23AF24960064E3CF /* Build configuration list for PBXProject "Blackjack" */ = {
+		8B378E7D23AF24960064E3CF /* Build configuration list for PBXProject "blackjack" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8B378E9423AF24980064E3CF /* Debug */,
