@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8B378E8123AF24960064E3CF"
-               BuildableName = "Blackjack.app"
-               BlueprintName = "blackjack"
+               BuildableName = "blackjack.app"
+               BlueprintName = "Blackjack"
                ReferencedContainer = "container:Blackjack.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,8 +45,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8B378E8123AF24960064E3CF"
-            BuildableName = "Blackjack.app"
-            BlueprintName = "blackjack"
+            BuildableName = "blackjack.app"
+            BlueprintName = "Blackjack"
             ReferencedContainer = "container:Blackjack.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -62,8 +62,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8B378E8123AF24960064E3CF"
-            BuildableName = "Blackjack.app"
-            BlueprintName = "blackjack"
+            BuildableName = "blackjack.app"
+            BlueprintName = "Blackjack"
             ReferencedContainer = "container:Blackjack.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
