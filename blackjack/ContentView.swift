@@ -26,7 +26,6 @@ struct ContentView: View {
     @State var gameWin = 0
     @State var gameTie = 0
     @State var gameState = -1
-    @State var cardRow = 0
     
     //Game States
     // -1 - Default
@@ -259,12 +258,6 @@ struct ContentView: View {
                     .alert(isPresented: $showAlert) {
                         Alert(title: Text("Statistics"), message: Text("\(showStats())"))
                 }
-                
-                //Shows card count
-                if(self.gameState == -1 && self.cards != [""]){
-                    
-                }
-                
             }
             
             // ======================= Cards/Content ============================
@@ -283,6 +276,7 @@ struct ContentView: View {
                             Divider()
                         }.padding(.vertical)
                         HStack{
+                            //Shows card count
                             if(self.cards != [""] && self.gameState == -1){
                                 Text("Card Count: \(self.hand)")
                                     .font(.headline)
